@@ -19,9 +19,6 @@ public class Solution {
 			if(word.trim().isEmpty()) cnt++;
 			
 		}
-		
-		
 		return cnt;
-		
 	}
 }
