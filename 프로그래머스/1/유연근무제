@@ -1,0 +1,40 @@
+class Solution {
+    public int solution(int[] schedules, int[][] timelogs, int startday) {
+        int answer = 0;
+        
+        for(int i = 0; i < schedules.length; i++) {
+            
+            int lastTime = schedules[i] + 10;
+            int start = startday;
+            boolean isok = true;
+            
+            if(lastTime % 100 >= 60) {
+                lastTime += 40;
+            }
+            
+            for(int j = 0; j < timelogs[i].length; j++) {
+                
+                if(start <= 5) {
+                    if(timelogs[i][j] > lastTime) {
+                        isok = false;
+                        break;
+                    
+                    }
+                }
+                
+                start++;
+                if(start > 7) {
+                    start = 1;
+                }
+                
+            }
+            
+            if(isok) {
+                answer++;
+            }
+            
+        }
+        
+        return answer;
+    }
+}
