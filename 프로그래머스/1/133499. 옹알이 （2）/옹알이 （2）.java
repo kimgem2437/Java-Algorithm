@@ -1,24 +1,29 @@
-
-public class Solution {
-	public int solution(String[] babbling) {
-	
-		int cnt = 0;
-		
-		String[] baby = {"aya", "ye", "woo", "ma"};
-		
-		for(String word : babbling) {
-			
-			for(String b : baby) {
-				word = word.replace(b + b, "x");
-			}
-			
-			for(String b : baby) {
-				word = word.replace(b, " ");
-			}
-			
-			if(word.trim().isEmpty()) cnt++;
-			
-		}
-		return cnt;
-	}
+class Solution {
+    public int solution(String[] babbling) {
+        
+        String[] words = {"aya", "ye", "woo", "ma"};
+        
+        int result = 0;
+        
+        for(int i = 0; i < babbling.length; i++){
+            
+            if(babbling[i].contains("ayaaya") || babbling[i].contains("yeye") || 
+               babbling[i].contains("woowoo") || babbling[i].contains("mama")) {
+                continue;
+            }
+            
+            for(int j = 0; j < words.length; j++){
+                babbling[i] = babbling[i].replace(words[j], " ");
+                }
+            babbling[i] = babbling[i].trim();
+        }
+    
+        
+        
+        for(int i = 0; i < babbling.length; i++){
+            if(babbling[i].equals("")) result++;
+        }
+        
+        return result;
+    }
 }
