@@ -1,43 +1,45 @@
-public class Solution {
-	public String solution(String X, String Y) {
-		
-		
-		int[] xcnt = new int[10];
-		int[] ycnt = new int[10];
-		
-		for(int i = 0; i < X.length(); i++) {
-			
-			xcnt[X.charAt(i) - '0']++;
-			
-		}
-		
-		for(int i = 0; i < Y.length(); i++) {
-			ycnt[Y.charAt(i) - '0']++;
-		}
-		
-		StringBuilder sb = new StringBuilder();
-		
-		for(int i = 9; i >= 0; i--) {
-			int min = Math.min(xcnt[i], ycnt[i]);
-			
-			if(min > 0) {
-				for(int j = 1; j <= min; j++) {
-					sb.append(i);
-				}
-			}
-			
-		}
-		
-		if(sb.length() < 0 || sb.toString().equals("")) {
-			return "-1";
-		} else if(sb.length() > 0 && sb.charAt(0) == '0') {
-			return "0";
-		} else {
-			return sb.toString();
-		}
-		
-		
-		
-	}
-
+class Solution {
+    public String solution(String X, String Y) {
+        
+        int[] xnum = new int[10];
+        int[] ynum = new int[10];
+        
+        for(int i = 0; i < X.length(); i++){
+            
+            char c = X.charAt(i);
+            
+            xnum[c - '0']++;
+            
+        }
+        
+        for(int i = 0; i < Y.length(); i++){
+            
+            char c = Y.charAt(i);
+            
+            ynum[c - '0']++;
+            
+        }
+        
+        StringBuilder sb = new StringBuilder(); 
+        
+        for(int i = 9; i >= 0; i--){
+            
+            int min = Math.min(xnum[i], ynum[i]);
+            
+            for(int j = 0; j < min; j++){
+                sb.append(i);
+            }
+            
+        }
+        
+        if(sb.length() == 0) {
+            return "-1";
+        }
+        
+        if(sb.charAt(0) == '0'){
+            return "0";
+        }
+        
+        return sb.toString();
+    }
 }
