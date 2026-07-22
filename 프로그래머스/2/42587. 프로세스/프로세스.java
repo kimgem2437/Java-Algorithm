@@ -3,38 +3,38 @@ import java.util.*;
 class Solution {
     public int solution(int[] priorities, int location) {
         
-        Queue<int[]> queue = new LinkedList<>();
+        Queue<int[]> que = new LinkedList<>();
         
-        for (int i = 0; i < priorities.length; i++) {
-            queue.offer(new int[]{priorities[i], i});
+        for(int i = 0; i < priorities.length; i++){
+            que.offer(new int[]{priorities[i], i});
         }
         
-        int answer = 0;
+        int result = 0;
         
-        while (!queue.isEmpty()) {
+        while(!que.isEmpty()){
             
-            int[] now = queue.poll();
+            int[] now = que.poll();
+            boolean isok = false;
             
-            boolean hasHigher = false;
-            
-            for (int[] process : queue) {
-                if (process[0] > now[0]) {
-                    hasHigher = true;
+            for(int[] process : que){
+                if(now[0] < process[0]){
+                    isok = true;
                     break;
                 }
             }
             
-            if (hasHigher) {
-                queue.offer(now);
+            if(isok){
+                que.offer(now);
             } else {
-                answer++;
+                result++;
                 
-                if (now[1] == location) {
-                    return answer;
+                if(now[1] == location){
+                    return result;
                 }
             }
+            
         }
         
-        return answer;
+        return result;
     }
 }
