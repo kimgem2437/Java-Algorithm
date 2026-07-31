@@ -7,20 +7,21 @@ class Solution {
                 continue;
             }
             
-            int yellowW = yellow / i;
+            int yellowH = yellow / i;
             
-            int width = yellowW + 2;
-            int height =  i + 2;
+            int height = yellowH + 2;
+            int width = i + 2;
             
-            int brownW = width * height - yellow;
+            int brownC = height * width - yellow;
             
-            if(brownW == brown){
+            if(brown == brownC){
                 if(width >= height) {
                     return new int[]{width, height};
                 } else {
                     return new int[]{height, width};
                 }
             }
+            
         }
         
         return new int[]{};
