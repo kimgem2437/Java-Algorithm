@@ -10,16 +10,15 @@ class Solution {
         dfs(k, dungeons, 0);
         
         return result;
-        
     }
     
-    public void dfs(int k, int[][] dungeons, int count){
-        
-        result = Math.max(result, count);
+    public void dfs(int k, int[][] dungeons, int cnt) {
         
         for(int i = 0; i < dungeons.length; i++){
-        
-            if(visited[i]){
+            
+            result = Math.max(result, cnt);
+            
+            if(visited[i]) {
                 continue;
             }
             
@@ -28,12 +27,9 @@ class Solution {
             
             if(k >= need) {
                 visited[i] = true;
-                dfs(k - use, dungeons, count + 1);
+                dfs(k - use, dungeons, cnt + 1);
                 visited[i] = false;
-            }
-            
-        
+            }  
         }
-        
     }
 }
