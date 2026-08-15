@@ -11,15 +11,16 @@ class Solution {
         
         dfs(numbers, "");
         
-        int cnt = 0;
+        int result = 0;
         
         for(int num : set) {
-            if(isPrime(num)) {
-                cnt++;
+            if(prime(num)) {
+                result++;
             }
         }
         
-        return cnt;
+        return result;
+        
     }
     
     public void dfs(String numbers, String current) {
@@ -30,33 +31,32 @@ class Solution {
         
         for(int i = 0; i < numbers.length(); i++){
             
-            if(visited[i]) {
+            if(visited[i]){
                 continue;
             }
             
             visited[i] = true;
             dfs(numbers, current + numbers.charAt(i));
             visited[i] = false;
-            
         }
+        
         
     }
     
-    public boolean isPrime(int num){
+    public boolean prime(int num) {
         
-        if(num < 2) {
+        if(num < 2){
             return false;
         }
         
-        for(int i = 2; i * i <= num; i++){
+        for(int i = 2; i * i <= num; i++) {
             
             if(num % i == 0) {
                 return false;
             }
-        
+            
         }
         
         return true;
-        
     }
 }
