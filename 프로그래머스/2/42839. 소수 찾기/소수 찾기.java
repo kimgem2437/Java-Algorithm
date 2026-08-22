@@ -2,8 +2,8 @@ import java.util.*;
 
 class Solution {
     
-    Set<Integer> set = new HashSet<>();
     boolean[] visited;
+    Set<Integer> set = new HashSet<>();
     
     public int solution(String numbers) {
         
@@ -13,17 +13,17 @@ class Solution {
         
         int result = 0;
         
-        for(int num : set) {
-            if(prime(num)) {
+        for(int num : set){
+            
+            if(isPrime(num)) {
                 result++;
             }
         }
         
         return result;
-        
     }
     
-    public void dfs(String numbers, String current) {
+    public void dfs(String numbers, String current){
         
         if(!current.equals("")){
             set.add(Integer.parseInt(current));
@@ -38,23 +38,21 @@ class Solution {
             visited[i] = true;
             dfs(numbers, current + numbers.charAt(i));
             visited[i] = false;
+            
         }
-        
         
     }
     
-    public boolean prime(int num) {
+    public boolean isPrime(int num){
         
-        if(num < 2){
+        if(num < 2) {
             return false;
         }
         
-        for(int i = 2; i * i <= num; i++) {
-            
-            if(num % i == 0) {
+        for(int i = 2; i * i <= num; i++){
+            if(num % i == 0){
                 return false;
             }
-            
         }
         
         return true;
