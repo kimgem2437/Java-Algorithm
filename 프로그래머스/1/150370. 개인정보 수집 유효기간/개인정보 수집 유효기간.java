@@ -2,58 +2,52 @@ import java.util.*;
 
 class Solution {
     public int[] solution(String today, String[] terms, String[] privacies) {
-        ArrayList<Integer> list = new ArrayList<>();
         
-        String[] todayInfo = today.split("\\.");
-        int todayYear = Integer.parseInt(todayInfo[0]);
-        int todayMonth = Integer.parseInt(todayInfo[1]);
-        int todayDay = Integer.parseInt(todayInfo[2]);
+        List<Integer> list = new LinkedList<>();
         
-        int todayTotal = todayYear * 12 * 28 + todayMonth * 28 + todayDay; 
+        String[] todaySt = today.split("[.]");
+        
+        int year = Integer.parseInt(todaySt[0]);
+        int month = Integer.parseInt(todaySt[1]);
+        int day = Integer.parseInt(todaySt[2]);
+    
+        int total = (28 * 12 * year) + (28 * month) + day;
+        
+        HashMap<String, Integer> map = new HashMap<>();
+        
+        for(int i = 0; i < terms.length; i++) {
+            String[] sp = terms[i].split(" ");
+            String st = sp[0];
+            int num = Integer.parseInt(sp[1]);
+            
+            map.put(st, num);
+        }
         
         for(int i = 0; i < privacies.length; i++) {
             
-            char privaciesType = privacies[i].charAt(11);
-            String[] privaciesSplit = privacies[i].split(" ");
-            String[] privaciesInfo = privaciesSplit[0].split("\\.");
+            String[] sp = privacies[i].split("[. ]");
             
-            int privaciesYear = Integer.parseInt(privaciesInfo[0]);
-            int privaciesMonth = Integer.parseInt(privaciesInfo[1]);
-            int privaciesDay = Integer.parseInt(privaciesInfo[2]);
+            int priYear = Integer.parseInt(sp[0]);
+            int priMonth = Integer.parseInt(sp[1]);
+            int priDay = Integer.parseInt(sp[2]);
+            String type = sp[3];
             
-            int privaciesTotal = privaciesYear * 12 * 28 + privaciesMonth * 28 + privaciesDay;
+            int last = map.get(type);
             
-            for(int j = 0; j < terms.length; j++) {
-                
-                char termsType = terms[j].charAt(0);
-                
-                if(privaciesType == termsType) {
-                    
-                    String[] termInfo = terms[j].split(" ");
-                    int month = Integer.parseInt(termInfo[1]);
-                    
-                    privaciesTotal += month * 28;
-                    break;
-                    
-                }
-                
-            }
-
-            if(todayTotal >= privaciesTotal) {
-                list.add(i+1);
+            int priTotal = (28 * 12 * priYear) + (28 * (priMonth + last)) + priDay - 1;
+            
+            if(total > priTotal){
+                list.add(i + 1);
             }
             
         }
         
-        int[] answer = new int[list.size()];
+        int[] result = new int[list.size()];
         
-        for(int i = 0; i < list.size(); i++) {
-            answer[i] = list.get(i);
+        for(int i = 0; i < list.size(); i++){
+            result[i] = list.get(i);
         }
         
-        return answer;
-        
-        
-        
+        return result;
     }
 }
