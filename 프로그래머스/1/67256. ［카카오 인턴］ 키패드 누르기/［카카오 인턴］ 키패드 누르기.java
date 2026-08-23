@@ -1,56 +1,64 @@
 class Solution {
+    
+    String phone = "123456789*0#";
+    
     public String solution(int[] numbers, String hand) {
-        String answer = "";
-        
-        int[][] pad = {
-            {3, 1},
-            {0, 0},
-            {0, 1},
-            {0, 2},
-            {1, 0},
-            {1, 1},
-            {1, 2},
-            {2, 0},
-            {2, 1},
-            {2, 2}
-        };
-        
-        int[] left = {3,0};
-        int[] right = {3, 2};
+
+        String left = "*";
+        String right = "#";
+        String result = "";
         
         for(int i = 0; i < numbers.length; i++){
             
             int num = numbers[i];
+            String target = String.valueOf(num);
             
-            if(num == 1 || num == 4 || num == 7) {
-                answer += "L";
-                left = pad[num];
-            } else if(num == 3 || num == 6 || num == 9){
-                answer += "R";
-                right = pad[num];
+            if(numbers[i] == 1 || numbers[i] == 4 || numbers[i] == 7){
+                result += "L";
+                left = target;
+                
+            } else if(numbers[i] == 3 || numbers[i] == 6 || numbers[i] == 9) {
+                result += "R";
+                right = target;
             } else {
-                int leftDist = Math.abs(left[0] - pad[num][0]) + Math.abs(left[1] - pad[num][1]);
                 
-                int rightDist = Math.abs(right[0] - pad[num][0]) + Math.abs(right[1] - pad[num][1]);
+                int leftDis = getDistance(left, target);
+                int rightDis = getDistance(right, target);
                 
-                if(leftDist < rightDist) {
-                    answer += "L";
-                    left = pad[num];
-                } else if(rightDist < leftDist) {
-                    answer += "R";
-                    right = pad[num];
+                if (leftDis < rightDis) {
+                    result += "L";
+                    left = target;
+                    
+                } else if (rightDis < leftDis) {
+                    result += "R";
+                    right = target;
+                    
                 } else {
-                    if(hand.equals("left")) {
-                        answer += "L";
-                        left = pad[num];
+                    if (hand.equals("left")) {
+                        result += "L";
+                        left = target;
                     } else {
-                        answer += "R";
-                        right = pad[num];
+                        result += "R";
+                        right = target;
                     }
                 }
             }
         }
         
-        return answer;
+        return result;
+    }
+    
+    public int getDistance(String from, String to) {
+        
+        int fromIdx = phone.indexOf(from);
+        int toIdx = phone.indexOf(to);
+        
+        int fromRow = fromIdx / 3;
+        int fromCol = fromIdx % 3;
+        
+        int toRow = toIdx / 3;
+        int toCol = toIdx % 3;
+        
+        return Math.abs(fromRow - toRow) + Math.abs(fromCol - toCol);
     }
 }
