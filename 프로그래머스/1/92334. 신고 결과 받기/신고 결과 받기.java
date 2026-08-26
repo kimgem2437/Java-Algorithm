@@ -3,57 +3,45 @@ import java.util.*;
 class Solution {
     public int[] solution(String[] id_list, String[] report, int k) {
         
-        ArrayList<String> list = new ArrayList<>();
-        HashSet<String> set = new HashSet<>();
+        Set<String> set = new HashSet<>();
+        Map<String, Integer> reportMap = new HashMap<>();
+        Map<String, Integer> mail = new HashMap<>();
         
-        for(int i = 0; i < report.length; i++) {
-            if(!set.contains(report[i])) {
-                set.add(report[i]);
-                list.add(report[i]);
+        for(int i = 0; i < id_list.length; i++){
+            mail.put(id_list[i], 0);
+            reportMap.put(id_list[i], 0);
+        }
+        
+        for(int i = 0; i < report.length; i++){
+            set.add(report[i]);
+        }
+        
+        for(String r : set){
+            String[] sp = r.split(" ");
+            
+            String reporter = sp[0];
+            String target = sp[1];
+            
+            reportMap.put(target, reportMap.get(target) + 1);
+        }
+        
+        for(String r : set){
+            String[] sp = r.split(" ");
+            
+            String reporter = sp[0];
+            String target = sp[1];
+            
+            if(reportMap.get(target) >= k){
+                mail.put(reporter, mail.get(reporter) + 1);
             }
         }
         
-        String[] delete = new String[list.size()];
+        int[] result = new int[id_list.length];
         
-        for(int i = 0; i < list.size(); i++) {
-            delete[i] = list.get(i);
-        }
-                
-        
-        HashMap<String, Integer> map = new HashMap<>();
-        for(int i = 0; i < id_list.length; i++) {
-            map.put(id_list[i], i);
+        for(int i = 0; i < result.length; i++) {
+            result[i] = mail.get(id_list[i]);
         }
         
-        int[] count = new int[id_list.length];
-        
-        for(int i = 0; i < delete.length; i++) {
-            String[] id = delete[i].split(" ");
-            String userId = id[0];
-            String reportId = id[1];
-            
-            int reportIdx = map.get(reportId);
-            count[reportIdx]++;
-            
-        }
-        
-        int[] answer = new int[id_list.length];
-        
-        for(int i = 0; i < delete.length; i++) {
-            String[] id = delete[i].split(" ");
-            
-            String userId = id[0];
-            String reportId = id[1];
-            
-            int userIdx = map.get(userId);
-            int reportIdx = map.get(reportId);
-            
-            if(count[reportIdx] >= k) {
-                answer[userIdx]++;
-            }
-        }
-        
-        return answer;
-        
+        return result;
     }
 }
