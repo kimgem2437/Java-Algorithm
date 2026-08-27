@@ -1,28 +1,33 @@
-public class Solution {
+import java.util.*;
+
+class Solution {
     public String solution(String s, String skip, int index) {
-        StringBuilder answer = new StringBuilder();
-
-        for (int i = 0; i < s.length(); i++) {
-            char ch = s.charAt(i);
-            int count = 0;
-
-            while (count < index) {
-                ch++;
-
-                if (ch > 'z') {
-                    ch = 'a';
+        
+        String result = "";
+        
+        for(int i = 0; i < s.length(); i++){
+            
+            char c = s.charAt(i);
+            int cnt = 0;
+            
+            while(cnt < index){
+                c++;
+                
+                if(c > 'z'){
+                    c = 'a';
                 }
-
-                if (skip.indexOf(ch) >= 0) {
+                
+                if(skip.contains(String.valueOf(c))){
                     continue;
                 }
-
-                count++;
+                
+                cnt++;
             }
-
-            answer.append(ch);
+            
+            result += c;
         }
-
-        return answer.toString();
+        
+        
+        return result;
     }
 }
