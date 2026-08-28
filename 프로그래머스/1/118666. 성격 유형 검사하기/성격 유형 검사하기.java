@@ -1,104 +1,58 @@
+import java.util.*;
+
 class Solution {
     public String solution(String[] survey, int[] choices) {
-        String answer = "";
+        StringBuilder sb = new StringBuilder();
         
-        char[][] sq = {
-            {'R', 'T'}, {'C', 'F'}, {'J', 'M'}, {'A', 'N'}
-        };
-        int[][] score = new int[4][2];
+        Map<Character, Integer> map = new HashMap<>();
         
-        for(int i = 0; i < choices.length; i++){
-            if(choices[i] == 4) {
-                continue;
-            } else if(choices[i] > 4){
-                char[] c = survey[i].toCharArray();
-                switch(c[1]) {
-                    case 'R' :
-                        score[0][0] += choices[i] - 4;
-                        break;
-                        
-                    case 'T' :
-                        score[0][1] += choices[i] - 4;
-                        break;
-                    
-                    case 'C' :
-                        score[1][0] += choices[i] - 4;
-                        break;
-                        
-                    case 'F' :
-                        score[1][1] += choices[i] - 4;
-                        break;
-                        
-                    case 'J' :
-                        score[2][0] += choices[i] - 4;
-                        break;
-                        
-                    case 'M' :
-                        score[2][1] += choices[i] - 4;
-                        break;
-                        
-                    case 'A' :
-                        score[3][0] += choices[i] - 4;
-                        break;
-                        
-                    case 'N' :
-                        score[3][1] += choices[i] - 4;
-                        break;
-                        
-                }
-                
-            } else {
-                
-                char[] c = survey[i].toCharArray();
-                
-                switch(c[0]) {
-                    case 'R' :
-                        score[0][0] += 4 - choices[i];
-                        break;
-                        
-                    case 'T' :
-                        score[0][1] += 4 - choices[i];
-                        break;
-                    
-                    case 'C' :
-                        score[1][0] += 4 - choices[i];
-                        break;
-                        
-                    case 'F' :
-                        score[1][1] += 4 - choices[i];
-                        break;
-                        
-                    case 'J' :
-                        score[2][0] += 4 - choices[i];
-                        break;
-                        
-                    case 'M' :
-                        score[2][1] += 4 - choices[i];
-                        break;
-                        
-                    case 'A' :
-                        score[3][0] += 4 - choices[i];
-                        break;
-                        
-                    case 'N' :
-                        score[3][1] +=  4 - choices[i];
-                        break;
-                        
-                }
+        char[] types = {'R', 'T', 'C', 'F', 'J', 'M', 'A', 'N'};
+        
+        for(char type : types){
+            map.put(type, 0);
+        }
+        
+        for(int i = 0; i < survey.length; i++){
+            char[] c = survey[i].toCharArray();
+            
+            char not = c[0];
+            char ok = c[1];
+            
+            int choice = choices[i];
+            int score = Math.abs(choice - 4);
+            
+            if(choice < 4){
+                map.put(not, map.get(not) + score);
+            } else if(choice > 4){
+                map.put(ok, map.get(ok) + score);
             }
         }
         
-        for(int i = 0; i < 4; i++){
-            
-            if(score[i][0] >= score[i][1]) {
-                answer += sq[i][0];
-            } else {
-                answer += sq[i][1];
-            }
-            
+        if(map.get('R') >= map.get('T')){
+            sb.append('R');
+        } else if(map.get('R') < map.get('T')){
+            sb.append('T');
+        }
+        
+        if(map.get('C') >= map.get('F')){
+            sb.append('C');
+        } else if(map.get('C') < map.get('F')){
+            sb.append('F');
+        }
+        
+        if(map.get('J') >= map.get('M')){
+            sb.append('J');
+        } else if(map.get('J') < map.get('M')){
+            sb.append('M');
+        }
+        
+        if(map.get('A') >= map.get('N')){
+            sb.append('A');
+        } else if(map.get('A') < map.get('N')){
+            sb.append('N');
         }
         
         
-        return answer;
+        return sb.toString();
     }
 }
