@@ -1,59 +1,71 @@
 class Solution {
     public int solution(String dartResult) {
-        
-        int answer = 0;
-        int cnt = 0;
+        int result = 0;
+        int[] num = new int[3];
         int index = 0;
-        
-        int[] chance = new int[3];
-        
-        for(int i = 0; i < dartResult.length(); i++) {
+                
+        for(int i = 0; i < dartResult.length(); i++){
             
             char c = dartResult.charAt(i);
             
-            if('0' <= c && c <='9') {
-                if (c == '1' && i + 1 < dartResult.length() && dartResult.charAt(i + 1) == '0') {
-                    cnt = 10;
-                    i++;
-                } else {
-                    cnt = c - '0';
-                     }
-            } else if(c == 'S' || c == 'D' || c == 'T'){
-                switch(c) {
-                    case 'S':
-                        cnt = (int)Math.pow(cnt, 1);
+            if(c >= '0' && c <= '9'){
+                if(i + 1 < dartResult.length() && dartResult.charAt(i + 1) == '0' && c == '1'){
+                    num[index] = 10;
+                    i += 1;
+                    continue;
+                }
+                num[index] = c - '0';
+                continue;
+            }
+            
+            if(c == 'S' || c == 'D' || c == 'T'){
+                switch (c) {
+                    case 'S' :
                         break;
                     case 'D' :
-                        cnt = (int)Math.pow(cnt, 2);
+                        num[index] *= num[index];
                         break;
-                    case 'T' :
-                        cnt = (int)Math.pow(cnt, 3);
+                    case 'T':
+                        num[index] *= (num[index] * num[index]);
                         break;
                 }
-                chance[index] = cnt;
-                index++;
-            } else if(c == '#' || c == '*') {
-                switch(c) {
+                if(i + 1 < dartResult.length() &&
+                  (dartResult.charAt(i + 1) == '#' || dartResult.charAt(i + 1) == '*')){
+                    continue;
+                } else if(index + 1 < 3){
+                    index++;
+                    continue;
+                }
+            }
+            
+            if(c == '#' || c == '*'){
+                switch (c) {
                     case '*' :
-                        chance[index - 1] *= 2;
-                        if (index - 2 >= 0) {
-                            chance[index - 2] *= 2;
+                        if(index - 1 >= 0) {
+                            num[index - 1] *= 2;
+                            num[index] *= 2;
+                        } else {
+                            num[index] *= 2;
+                        }
+                        if(index + 1 < 3){
+                            index++;
                         }
                         break;
-                    case '#' :
-                        chance[index - 1] *= -1;
+                    case '#':
+                        num[index] = -(num[index]);
+                        if(index + 1 < 3){
+                            index++;
+                        }
                         break;
                 }
             }
             
-            
         }
         
         for(int i = 0; i < 3; i++){
-            answer += chance[i];
+                result += num[i];
         }
         
-        
-        return answer;
+        return result;
     }
 }
