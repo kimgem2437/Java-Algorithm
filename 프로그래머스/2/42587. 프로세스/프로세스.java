@@ -9,32 +9,34 @@ class Solution {
             que.offer(new int[]{priorities[i], i});
         }
         
-        int result = 0;
+        int order = 0;
         
-        while(!que.isEmpty()){
+        while(!que.isEmpty()) {
             
-            int[] now = que.poll();
-            boolean isok = false;
+            int[] current = que.poll();
+            int priority = current[0];
+            int index = current[1];
+            
+            boolean hasHigher = false;
             
             for(int[] process : que){
-                if(now[0] < process[0]){
-                    isok = true;
+                if(process[0] > priority){
+                    hasHigher = true;
                     break;
                 }
             }
             
-            if(isok){
-                que.offer(now);
+            if(hasHigher) {
+                que.offer(current);
             } else {
-                result++;
+                order++;
                 
-                if(now[1] == location){
-                    return result;
+                if(index == location){
+                    return order;
                 }
             }
-            
         }
         
-        return result;
+        return -1;
     }
 }
