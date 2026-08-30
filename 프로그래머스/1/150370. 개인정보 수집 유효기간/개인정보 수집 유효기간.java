@@ -3,43 +3,34 @@ import java.util.*;
 class Solution {
     public int[] solution(String today, String[] terms, String[] privacies) {
         
-        List<Integer> list = new LinkedList<>();
+        String[] todayST = today.split("[.]");
         
-        String[] todaySt = today.split("[.]");
+        int todayTotal = (Integer.parseInt(todayST[0]) * 12 * 28) + (Integer.parseInt(todayST[1]) * 28) +
+            (Integer.parseInt(todayST[2]));
         
-        int year = Integer.parseInt(todaySt[0]);
-        int month = Integer.parseInt(todaySt[1]);
-        int day = Integer.parseInt(todaySt[2]);
-    
-        int total = (28 * 12 * year) + (28 * month) + day;
+        Map<String, Integer> map = new HashMap<>();
         
-        HashMap<String, Integer> map = new HashMap<>();
-        
-        for(int i = 0; i < terms.length; i++) {
-            String[] sp = terms[i].split(" ");
-            String st = sp[0];
-            int num = Integer.parseInt(sp[1]);
-            
-            map.put(st, num);
+        for(int i = 0; i < terms.length; i++){
+            String[] st = terms[i].split(" ");
+            Integer num = Integer.parseInt(st[1]);
+            map.put(st[0], num);
         }
         
-        for(int i = 0; i < privacies.length; i++) {
+        List<Integer> list = new ArrayList<>();
+        
+        for(int i = 0; i < privacies.length; i++){
             
-            String[] sp = privacies[i].split("[. ]");
-            
-            int priYear = Integer.parseInt(sp[0]);
-            int priMonth = Integer.parseInt(sp[1]);
-            int priDay = Integer.parseInt(sp[2]);
-            String type = sp[3];
-            
+            String[] st = privacies[i].split("[. ]");
+            int year = Integer.parseInt(st[0]) * 12 * 28;
+            int month = Integer.parseInt(st[1]) * 28;
+            int day = Integer.parseInt(st[2]);
+            String type = st[3];
             int last = map.get(type);
+            int priTotal = year + month + day + (last * 28);
             
-            int priTotal = (28 * 12 * priYear) + (28 * (priMonth + last)) + priDay - 1;
-            
-            if(total > priTotal){
+            if(todayTotal >= priTotal){
                 list.add(i + 1);
             }
-            
         }
         
         int[] result = new int[list.size()];
@@ -47,6 +38,9 @@ class Solution {
         for(int i = 0; i < list.size(); i++){
             result[i] = list.get(i);
         }
+        
+        Arrays.sort(result);
+        
         
         return result;
     }
