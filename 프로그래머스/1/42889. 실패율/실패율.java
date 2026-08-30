@@ -3,28 +3,29 @@ import java.util.*;
 class Solution {
     public int[] solution(int N, int[] stages) {
         
-        int[] result = new int[N];
         double[] fail = new double[N + 2];
-        int[] num = new int[N + 2];
-        Integer[] stageNum = new Integer[N];
-        
+        int[] count = new int[N + 2]; 
+        int people = stages.length;
+                
         for(int i = 0; i < stages.length; i++){
-            num[stages[i]]++;
+            count[stages[i]]++;
         }
         
-        int total = stages.length;
+        int total = people;
         
-        for(int i = 1; i < fail.length; i++) {
-            if (total == 0) {
+        for(int i = 1; i <= N; i++){
+            if(total == 0) {
                 fail[i] = 0;
             } else {
-                fail[i] = (double) num[i] / total;
+                fail[i] = (double) count[i] / total;
             }
             
-            total -= num[i];
+            total -= count[i];
         }
         
-        for (int i = 0; i < N; i++) {
+        Integer[] stageNum = new Integer[N];
+        
+        for(int i = 0; i < N; i++){
             stageNum[i] = i + 1;
         }
         
@@ -35,7 +36,9 @@ class Solution {
             return Double.compare(fail[b], fail[a]);
         });
         
-        for (int i = 0; i < N; i++) {
+        int[] result = new int[N];
+        
+        for(int i = 0; i < N; i++){
             result[i] = stageNum[i];
         }
         
