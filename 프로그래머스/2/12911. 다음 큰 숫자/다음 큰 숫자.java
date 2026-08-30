@@ -1,16 +1,43 @@
 class Solution {
     public int solution(int n) {
-        int result = n + 1;
         
-        int count = Integer.bitCount(n);
+        String binary = Integer.toBinaryString(n);
+        int one = 0;
         
-        while(true) {
+        for(int i = 0; i < binary.length(); i++){
             
-            if(count == Integer.bitCount(result)){
-                return result;
+            char c = binary.charAt(i);
+            
+            if(c == '1'){
+                one++;
+            }    
+            
+        }
+        
+        int result = 0;
+    
+        while(true){
+            
+            result = ++n;
+            int resultOne = 0;
+            
+            String binaryResult = Integer.toBinaryString(result);
+            
+            for(int i = 0; i < binaryResult.length(); i++){
+                char c = binaryResult.charAt(i);
+            
+                if(c == '1'){
+                    resultOne++;
+                }
+                
             }
             
-            result++;
+            if(resultOne == one){
+                break;
+            } 
         }
+        
+        
+        return result;
     }
 }
