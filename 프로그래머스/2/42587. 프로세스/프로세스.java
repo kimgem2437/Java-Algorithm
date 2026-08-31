@@ -2,41 +2,43 @@ import java.util.*;
 
 class Solution {
     public int solution(int[] priorities, int location) {
-        
+
+        int result = 0;
         Queue<int[]> que = new LinkedList<>();
         
         for(int i = 0; i < priorities.length; i++){
-            que.offer(new int[]{priorities[i], i});
+            que.offer(new int[]{priorities[i] , i});
         }
         
-        int order = 0;
-        
-        while(!que.isEmpty()) {
+        while(!que.isEmpty()){
             
-            int[] current = que.poll();
-            int priority = current[0];
-            int index = current[1];
+            int[] x = que.poll();
+            int pro = x[0];
+            int index = x[1];
             
-            boolean hasHigher = false;
+            boolean high = false;
             
-            for(int[] process : que){
-                if(process[0] > priority){
-                    hasHigher = true;
+            for(int[] nums : que) {
+                
+                int next = nums[0];
+                
+                if(next > pro){
+                    high = true;
                     break;
                 }
             }
             
-            if(hasHigher) {
-                que.offer(current);
+            if(high){
+                que.offer(x);
             } else {
-                order++;
+                result++;
                 
                 if(index == location){
-                    return order;
+                    return result;
                 }
             }
         }
         
-        return -1;
+        return result;
     }
 }
