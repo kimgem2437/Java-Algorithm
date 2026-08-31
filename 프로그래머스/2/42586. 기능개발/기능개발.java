@@ -3,25 +3,36 @@ import java.util.*;
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
         
+        List<Integer> list = new LinkedList<>();
+        
         Queue<Integer> que = new LinkedList<>();
         
         for(int i = 0; i < progresses.length; i++){
-            int day = (100 - progresses[i] + speeds[i] - 1) / speeds[i];
+            
+            int remain = 100 - progresses[i];
+            
+            int day ;
+            if(remain % speeds[i] == 0){
+                day = remain / speeds[i];
+            } else {
+                day = remain / speeds[i] + 1;
+            }
+            
             que.offer(day);
         }
         
-        ArrayList<Integer> list = new ArrayList<>();
         
         while(!que.isEmpty()){
-            int releaseday = que.poll();
-            int count = 1;
             
-            while(!que.isEmpty() && que.peek() <= releaseday) {
+            int day = que.poll();
+            int cnt = 1;
+            
+            while(!que.isEmpty() && que.peek() <= day){
                 que.poll();
-                count++;
+                cnt++;
             }
             
-            list.add(count);
+            list.add(cnt);
         }
         
         int[] result = new int[list.size()];
@@ -29,6 +40,7 @@ class Solution {
         for(int i = 0; i < list.size(); i++){
             result[i] = list.get(i);
         }
+            
         
         return result;
     }
