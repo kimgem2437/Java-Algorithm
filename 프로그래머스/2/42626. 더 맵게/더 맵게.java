@@ -3,9 +3,9 @@ import java.util.*;
 class Solution {
     public int solution(int[] scoville, int K) {
         
-        PriorityQueue<Integer> heap = new PriorityQueue<>();
+        int cnt = 0;
         
-        int result = 0;
+        PriorityQueue<Integer> heap = new PriorityQueue<>();
         
         for(int i = 0; i < scoville.length; i++){
             heap.offer(scoville[i]);
@@ -13,20 +13,19 @@ class Solution {
         
         while(heap.peek() < K){
             
-            if(heap.size() <= 1) {
+            if(heap.size() < 2){
                 return -1;
             }
             
-            int min = heap.poll();
-            int minsco = heap.poll();
+            int first = heap.poll();
+            int second = heap.poll();
             
-            int mix = min + (minsco * 2);
+            int mix = first + second * 2;
+            
             heap.offer(mix);
-            
-            result++;
-            
+            cnt++;
         }
         
-        return result;
+        return cnt;
     }
 }
