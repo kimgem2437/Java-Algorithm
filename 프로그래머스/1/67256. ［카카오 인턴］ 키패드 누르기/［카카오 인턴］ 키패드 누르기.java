@@ -1,64 +1,65 @@
 class Solution {
     
-    String phone = "123456789*0#";
+    String keypad = "123456789*0#";
     
     public String solution(int[] numbers, String hand) {
-
-        String left = "*";
-        String right = "#";
-        String result = "";
         
-        for(int i = 0; i < numbers.length; i++){
+        char left = '*';
+        char right = '#';
+        
+        StringBuilder sb = new StringBuilder();
+        
+        for (int i = 0; i < numbers.length; i++) {
             
-            int num = numbers[i];
-            String target = String.valueOf(num);
+            int number = numbers[i];
+            char target = (char)(number + '0');
             
-            if(numbers[i] == 1 || numbers[i] == 4 || numbers[i] == 7){
-                result += "L";
+            if (number == 1 || number == 4 || number == 7) {
+                sb.append("L");
                 left = target;
                 
-            } else if(numbers[i] == 3 || numbers[i] == 6 || numbers[i] == 9) {
-                result += "R";
+            } else if (number == 3 || number == 6 || number == 9) {
+                sb.append("R");
                 right = target;
+                
             } else {
+                int leftDist = getDistance(left, target);
+                int rightDist = getDistance(right, target);
                 
-                int leftDis = getDistance(left, target);
-                int rightDis = getDistance(right, target);
-                
-                if (leftDis < rightDis) {
-                    result += "L";
+                if (leftDist < rightDist) {
+                    sb.append("L");
                     left = target;
                     
-                } else if (rightDis < leftDis) {
-                    result += "R";
+                } else if (rightDist < leftDist) {
+                    sb.append("R");
                     right = target;
                     
                 } else {
                     if (hand.equals("left")) {
-                        result += "L";
+                        sb.append("L");
                         left = target;
                     } else {
-                        result += "R";
+                        sb.append("R");
                         right = target;
                     }
                 }
             }
         }
         
-        return result;
+        return sb.toString();
     }
     
-    public int getDistance(String from, String to) {
+    public int getDistance(char from, char to) {
         
-        int fromIdx = phone.indexOf(from);
-        int toIdx = phone.indexOf(to);
+        int fromIndex = keypad.indexOf(from);
+        int toIndex = keypad.indexOf(to);
         
-        int fromRow = fromIdx / 3;
-        int fromCol = fromIdx % 3;
+        int fromR = fromIndex / 3;
+        int fromC = fromIndex % 3;
         
-        int toRow = toIdx / 3;
-        int toCol = toIdx % 3;
+        int toR = toIndex / 3;
+        int toC = toIndex % 3;
         
-        return Math.abs(fromRow - toRow) + Math.abs(fromCol - toCol);
+        return Math.abs(fromR - toR) + Math.abs(fromC - toC);
     }
 }
