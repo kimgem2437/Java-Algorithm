@@ -1,26 +1,34 @@
+import java.util.*;
+
 class Solution {
     public int[] solution(int[] prices) {
         
         int[] result = new int[prices.length];
         
+        Queue<Integer> que = new LinkedList<>();
+        
         for(int i = 0; i < prices.length; i++){
+            que.offer(prices[i]);
+        }
+        
+        int index = 0;
+        
+        while(!que.isEmpty()){
             
-            boolean isok = true;
+            int num = que.poll();
+            int cnt = 0;
             
-            for(int j = i + 1; j < prices.length; j++){
-                
-                if(prices[i] > prices[j]) {
-                    isok = false;
-                    result[i] = j - i;
+            for(int nums : que){
+                if(nums < num){
+                    cnt++;
                     break;
+                } else {
+                    cnt++;
                 }
-                
             }
             
-            if(isok){
-                result[i] = prices.length - 1 - i;
-            }
-            
+            result[index] = cnt;
+            index++;
         }
         
         return result;
