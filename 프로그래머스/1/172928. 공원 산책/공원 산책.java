@@ -1,100 +1,98 @@
 class Solution {
-    
-    int[][] map;
-    
     public int[] solution(String[] park, String[] routes) {
         
-        map = new int[park.length][park[0].length()];
+        int startR = 0;
+        int startC = 0;
+        boolean start = false;
+        for(int r = 0; r < park.length; r++){
+            for(int c = 0; c < park[r].length(); c++){
+                char ch = park[r].charAt(c);
+                
+                if(ch == 'S'){
+                    startR = r;
+                    startC = c;
+                    start = true;
+                }
+                if(start){
+                    break;
+                }
+            }
+            if(start){
+                    break;
+                }
+        }
         
-        int r = park.length;
-        int c = park[0].length();
+        int mapR = park.length;
+        int mapC = park[0].length();
+        
+        String[] cols = new String[mapC];
+        for(int c = 0; c < mapC; c++){
+            StringBuilder sb = new StringBuilder();
             
-        int disR = 0;
-        int disC = 0;
+            for(int r = 0; r < mapR; r++){
+                sb.append(park[r].charAt(c));
+            }
             
-        for(int i = 0; i < r; i++) {
-            for(int j = 0; j < c; j++){
+            cols[c] = sb.toString();
+        }
+        
+        for(int i = 0; i < routes.length; i++){
+            
+            String[] route = routes[i].split(" ");
+            String arrow = route[0];
+            int num = Integer.parseInt(route[1]);
+            
+            if(arrow.equals("E")){
                 
-                char ch = park[i].charAt(j);
+                if(startC + num >= mapC) {
+                    continue;
+                }
                 
-                if(ch == 'S') {
-                    map[i][j] = 1;
-                    
-                    disR = i;
-                    disC = j;
-                    
-                } else if(ch == 'O') {
-                    map[i][j] = 0;
-                    
-                } else {
-                    map[i][j] = -1;
+                String st = park[startR].substring(startC + 1, startC + num + 1);
+                if(!st.contains("X")){
+                    startC += num;
+                }
+                
+            } else if(arrow.equals("W")) {
+                
+                if(startC - num < 0) {
+                    continue;
+                }
+                
+                String st = park[startR].substring(startC - num, startC);
+                if(!st.contains("X")){
+                    startC -= num;
+                }
+                
+            } else if(arrow.equals("S")) {
+                
+                if(startR + num >= mapR) {
+                    continue;
+                }
+                
+                String st = cols[startC].substring(startR + 1, startR + num + 1);
+                if(!st.contains("X")){
+                    startR += num;
+                }
+                
+            } else if(arrow.equals("N")) {
+                
+                if(startR - num < 0) {
+                    continue;
+                }
+                
+                String st = cols[startC].substring(startR - num, startR);
+                if(!st.contains("X")){
+                    startR -= num;
                 }
                 
             }
+            
         }
         
-        for(int i = 0; i < routes.length; i++) {
-            
-            String[] st = routes[i].split(" ");
-            String ewsn = st[0];
-            int num = Integer.parseInt(st[1]);
-            
-            if(ewsn.equals("E") && isok(ewsn, num, disR, disC)){
-                disC += num;
-            } else if(ewsn.equals("W") && isok(ewsn, num, disR, disC)){
-                disC -= num;
-            } else if(ewsn.equals("S") && isok(ewsn, num, disR, disC)){
-                disR += num;
-            } else if(ewsn.equals("N") && isok(ewsn, num, disR, disC)){
-                disR -= num;
-            }
-                
-        }
+        int[] result = {startR, startC};
         
-        int[] result = {disR, disC};
         
         return result;
-    }
-    
-    public boolean isok(String ewsn, int num, int disR, int disC){
-        
-        int r = map.length;
-        int c = map[0].length;
-        
-        for(int i = 1; i <= num; i++) {
-            if(ewsn.equals("E")){
-                if(disC + 1 >= c || map[disR][disC + 1] == -1) {
-                    return false;
-                } else {
-                    disC++;
-                }
-            }
-            
-            if(ewsn.equals("W")){
-                if(disC - 1 < 0 || map[disR][disC - 1] == -1) {
-                    return false;
-                } else {
-                    disC--;
-                }
-            }
-            
-            if(ewsn.equals("S")){
-                if(disR + 1 >= r || map[disR + 1][disC] == -1) {
-                    return false;
-                } else {
-                    disR++;
-                }
-            }
-            
-            if(ewsn.equals("N")){
-                if(disR - 1 < 0 || map[disR - 1][disC] == -1) {
-                    return false;
-                } else {
-                    disR--;
-                }
-            }
-        }
-        
-        return true;
     }
 }
