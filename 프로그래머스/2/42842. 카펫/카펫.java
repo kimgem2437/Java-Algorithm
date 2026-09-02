@@ -1,27 +1,23 @@
 class Solution {
     public int[] solution(int brown, int yellow) {
         
-        for(int i = 1; i <= yellow; i++){
+        int total = brown + yellow;
+        
+        for(int height = 3; height <= total; height++){
             
-            if(yellow % i != 0){
+            if(total % height != 0){
                 continue;
             }
             
-            int yellowH = yellow / i;
+            int width = total / height;
             
-            int height = yellowH + 2;
-            int width = i + 2;
-            
-            int brownC = height * width - yellow;
-            
-            if(brown == brownC){
-                if(width >= height) {
-                    return new int[]{width, height};
-                } else {
-                    return new int[]{height, width};
-                }
+            if(width < height){
+                continue;
             }
             
+            if((width - 2) * (height - 2) == yellow){
+                return new int[]{width, height};
+            }
         }
         
         return new int[]{};
