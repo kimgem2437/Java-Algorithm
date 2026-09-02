@@ -4,42 +4,49 @@ class Solution {
     public int[] solution(String[] id_list, String[] report, int k) {
         
         Set<String> set = new HashSet<>();
-        Map<String, Integer> reportMap = new HashMap<>();
-        Map<String, Integer> mail = new HashMap<>();
+        HashMap<String, Integer> map = new HashMap<>();
+        HashMap<String, StringBuilder> mapString = new HashMap<>();
         
         for(int i = 0; i < id_list.length; i++){
-            mail.put(id_list[i], 0);
-            reportMap.put(id_list[i], 0);
+            map.put(id_list[i], 0);
+            mapString.put(id_list[i], new StringBuilder());
         }
         
         for(int i = 0; i < report.length; i++){
             set.add(report[i]);
         }
         
-        for(String r : set){
-            String[] sp = r.split(" ");
+        for(String rep : set){
+            String[] st = rep.split(" ");
             
-            String reporter = sp[0];
-            String target = sp[1];
+            String reporter = st[0];
+            String user = st[1];
             
-            reportMap.put(target, reportMap.get(target) + 1);
-        }
-        
-        for(String r : set){
-            String[] sp = r.split(" ");
-            
-            String reporter = sp[0];
-            String target = sp[1];
-            
-            if(reportMap.get(target) >= k){
-                mail.put(reporter, mail.get(reporter) + 1);
-            }
+            map.put(user, map.get(user) + 1);
+            mapString.get(reporter).append(user).append(" ");
         }
         
         int[] result = new int[id_list.length];
         
-        for(int i = 0; i < result.length; i++) {
-            result[i] = mail.get(id_list[i]);
+        for(int i = 0; i < id_list.length; i++){
+            
+            String st = mapString.get(id_list[i]).toString();
+            
+            if(st.equals("")){
+                result[i] = 0;
+                continue;
+            }
+            
+            String[] stb = st.split(" ");
+            int cnt = 0;
+            
+            for(int j = 0; j < stb.length; j++){
+                if(map.get(stb[j]) >= k){
+                    cnt++;
+                }
+            }
+            
+            result[i] += cnt;
         }
         
         return result;
