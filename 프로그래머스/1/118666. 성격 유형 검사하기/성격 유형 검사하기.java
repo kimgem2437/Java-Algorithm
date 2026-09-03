@@ -2,57 +2,41 @@ import java.util.*;
 
 class Solution {
     public String solution(String[] survey, int[] choices) {
+        
+        Map<String, Integer> map = new HashMap<>();
         StringBuilder sb = new StringBuilder();
         
-        Map<Character, Integer> map = new HashMap<>();
+        String[] sur = {"R", "T", "C", "F", "J", "M", "A", "N"};
         
-        char[] types = {'R', 'T', 'C', 'F', 'J', 'M', 'A', 'N'};
-        
-        for(char type : types){
-            map.put(type, 0);
+        for(int i = 0; i < sur.length; i++){
+            map.put(sur[i], 0);
         }
         
-        for(int i = 0; i < survey.length; i++){
+        for(int i = 0; i < choices.length; i++){
+            
             char[] c = survey[i].toCharArray();
             
-            char not = c[0];
-            char ok = c[1];
-            
-            int choice = choices[i];
-            int score = Math.abs(choice - 4);
-            
-            if(choice < 4){
-                map.put(not, map.get(not) + score);
-            } else if(choice > 4){
-                map.put(ok, map.get(ok) + score);
+            if(choices[i] - 4 < 0){
+                map.put(String.valueOf(c[0]), 
+                        map.get(String.valueOf(c[0])) + Math.abs(choices[i] - 4));
+            } else if(choices[i] - 4 > 0){
+                map.put(String.valueOf(c[1]), 
+                        map.get(String.valueOf(c[1])) + choices[i] - 4);
             }
+            
         }
         
-        if(map.get('R') >= map.get('T')){
-            sb.append('R');
-        } else if(map.get('R') < map.get('T')){
-            sb.append('T');
+        for(int i = 0; i < 8; i+=2){
+            
+            if(map.get(sur[i]) >= map.get(sur[i + 1])){
+                sb.append(sur[i]);
+            } else{
+                sb.append(sur[i + 1]);
+            }
+            
         }
-        
-        if(map.get('C') >= map.get('F')){
-            sb.append('C');
-        } else if(map.get('C') < map.get('F')){
-            sb.append('F');
-        }
-        
-        if(map.get('J') >= map.get('M')){
-            sb.append('J');
-        } else if(map.get('J') < map.get('M')){
-            sb.append('M');
-        }
-        
-        if(map.get('A') >= map.get('N')){
-            sb.append('A');
-        } else if(map.get('A') < map.get('N')){
-            sb.append('N');
-        }
-        
         
         return sb.toString();
+        
     }
 }
