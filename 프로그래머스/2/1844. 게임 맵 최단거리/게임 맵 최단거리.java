@@ -2,56 +2,46 @@ import java.util.*;
 
 class Solution {
     
+    int[] dr = {0, 0, -1, 1};
+    int[] dc = {-1 , 1 ,0 ,0};
+    Queue<int[]> que = new LinkedList<>();
     boolean[][] visited;
-    int[] dr = {0, 0 , 1, -1};
-    int[] dc = {1, -1, 0, 0};
-    int answer = 0;
     
     public int solution(int[][] maps) {
         
-        visited = new boolean[maps.length][maps[0].length];
+        int n = maps.length;
+        int m = maps[0].length;
         
-        Queue<int[]> que = new LinkedList<>();
+        visited = new boolean[n][m];
         
         que.offer(new int[]{0, 0, 1});
         
-        while(!que.isEmpty()) {
+         while(!que.isEmpty()){
             
-            int[] curr = que.poll();
-            visited[0][0] = true;
+            int[] location = que.poll();
+            int r = location[0];
+            int c = location[1];
+            int distance = location[2];
+             
+            if(r == n - 1 && c == m - 1) {
+                return distance;
+            }
+             
+            for(int i = 0; i < 4; i++){
             
-            int r = curr[0];
-            int c = curr[1];
-            int dis = curr[2];
-            
-            if(r == maps.length - 1 && c == maps[0].length -1) {
-                return dis;
+                int br = r + dr[i];
+                int bc = c + dc[i];
+
+                if(br >= 0 && br < maps.length && bc >= 0 && bc < maps[br].length 
+                   && maps[br][bc] == 1 && !visited[br][bc]){
+                    
+                    visited[br][bc] = true;
+                    que.offer(new int[]{br, bc, distance + 1});
+                }
             }
             
-            for(int i = 0; i < 4; i++) {
-                
-                int nr = dr[i] + r;
-                int nc = dc[i] + c;
-                
-                if(nr >= maps.length || nr < 0 || nc >= maps[0].length || nc < 0) {
-                    continue;
-                }
-                
-                if(visited[nr][nc]) {
-                    continue;
-                }
-                
-                if (maps[nr][nc] == 0) {
-                    continue;
-                }
-                
-                visited[nr][nc] = true;
-                que.offer(new int[]{nr, nc, dis + 1});
-                
-            }
-            
-        }
-        
+             
+         }
         
         return -1;
     }
