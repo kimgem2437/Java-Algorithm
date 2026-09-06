@@ -1,14 +1,16 @@
+import java.util.*;
+
 class Solution {
     
-    int[] dr = {0, 0, 1, -1};
-    int[] dc = {1, -1, 0, 0};
+    int[] dr = {-1, 1, 0, 0};
+    int[] dc = {0, 0, -1, 1};
     
     public int[] solution(String[][] places) {
         
         int[] result = new int[5];
         
-        for(int i = 0; i < 5; i++){
-            if(checkRoom(places[i])) {
+        for (int i = 0; i < 5; i++) {
+            if (checkRoom(places[i])) {
                 result[i] = 1;
             } else {
                 result[i] = 0;
@@ -16,61 +18,70 @@ class Solution {
         }
         
         return result;
-}
+    }
     
     public boolean checkRoom(String[] room) {
         
-        for(int r = 0; r < 5; r++) {
-            for(int c = 0; c < 5; c++) {
+        for (int r = 0; r < 5; r++) {
+            for (int c = 0; c < 5; c++) {
                 
-                if(room[r].charAt(c) == 'P'){
-                    boolean[][] visited = new boolean[5][5];
-                    
-                    if(!dfs(room, r, c, 0, visited)){
+                if (room[r].charAt(c) == 'P') {
+                    if (!bfs(room, r, c)) {
                         return false;
                     }
                 }
-                
             }
         }
         
         return true;
     }
     
-    public boolean dfs(String[] room, int r, int c, int distance, boolean[][] visited){
+    public boolean bfs(String[] room, int startR, int startC) {
         
-        visited[r][c] = true;
+        Queue<int[]> que = new LinkedList<>();
+        boolean[][] visited = new boolean[5][5];
         
-        if(distance > 0 && room[r].charAt(c) == 'P'){
-            return false;
-        }
+        que.offer(new int[]{startR, startC, 0});
+        visited[startR][startC] = true;
         
-        if(distance == 2) {
-            return true;
-        }
-        
-        for(int i = 0; i < 4; i++) {
+        while (!que.isEmpty()) {
             
-            int nr = r + dr[i];
-            int nc = c + dc[i];
+            int[] cur = que.poll();
             
-            if(nr < 0 || nr >= 5 || nc < 0 || nc >= 5) {
+            int r = cur[0];
+            int c = cur[1];
+            int distance = cur[2];
+            
+            if (distance == 2) {
                 continue;
             }
             
-            if(visited[nr][nc]) {
-                continue;
-            }
-            
-            if(room[nr].charAt(nc) == 'X') {
-                continue;
-            }
-            
-            if(!dfs(room, nr, nc, distance + 1, visited)){
-                return false;
+            for (int i = 0; i < 4; i++) {
+                
+                int nr = r + dr[i];
+                int nc = c + dc[i];
+                
+                if (nr < 0 || nr >= 5 || nc < 0 || nc >= 5) {
+                    continue;
+                }
+                
+                if (visited[nr][nc]) {
+                    continue;
+                }
+                
+                if (room[nr].charAt(nc) == 'X') {
+                    continue;
+                }
+                
+                if (room[nr].charAt(nc) == 'P') {
+                    return false;
+                }
+                
+                visited[nr][nc] = true;
+                que.offer(new int[]{nr, nc, distance + 1});
             }
         }
-            
-            return true;
-        }
+        
+        return true;
     }
+}
