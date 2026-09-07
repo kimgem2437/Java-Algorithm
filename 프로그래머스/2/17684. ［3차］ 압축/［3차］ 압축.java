@@ -3,38 +3,37 @@ import java.util.*;
 class Solution {
     public int[] solution(String msg) {
         
-        Map<String, Integer> dict = new HashMap<>();
-        List<Integer> list = new ArrayList<>();
-
+        List<Integer> list = new LinkedList<>();
+        Map<String, Integer> map = new HashMap<>();
+        
         for(int i = 0; i < 26; i++){
-            char c = (char)('A' + i);
-            dict.put(String.valueOf(c), i + 1);
+            map.put(String.valueOf((char)('A' + i)), i + 1);
         }
         
+        int dictIndex = 27;
         int index = 0;
-        int dictNum = 27;
         
-        while(index < msg.length()){
+        while (index < msg.length()) {
             
             String w = "";
-            int nextIndex = index;
+            int next = index;
             
-            while(nextIndex < msg.length()){
-                String temp = msg.substring(index, nextIndex + 1);
+            while (next < msg.length()) {
+                String temp = msg.substring(index, next + 1);
                 
-                if(dict.containsKey(temp)){
+                if (map.containsKey(temp)) {
                     w = temp;
-                    nextIndex++;
+                    next++;
                 } else {
                     break;
                 }
             }
             
-            list.add(dict.get(w));
+            list.add(map.get(w));
             
-            if(nextIndex < msg.length()){
-                String newWord = msg.substring(index, nextIndex + 1);
-                dict.put(newWord, dictNum++);
+            if (next < msg.length()) {
+                String newWord = msg.substring(index, next + 1);
+                map.put(newWord, dictIndex++);
             }
             
             index += w.length();
