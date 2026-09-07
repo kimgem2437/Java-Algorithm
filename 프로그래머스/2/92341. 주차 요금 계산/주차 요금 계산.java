@@ -1,58 +1,67 @@
 import java.util.*;
 
 class Solution {
-    
-    Map<String, Integer> map = new HashMap<>();
-    Map<String, Integer> total = new TreeMap<>();
-    
     public int[] solution(int[] fees, String[] records) {
+        
+        Map<String, Integer> map = new HashMap<>();
+        TreeMap<String, Integer> sort = new TreeMap<>();
         
         for(int i = 0; i < records.length; i++){
             
-            String[] sp = records[i].split("[: ]");
+            String[] park = records[i].split("[: ]");
             
-            int hour = Integer.parseInt(sp[0]);
-            int minute = Integer.parseInt(sp[1]);
-            String number = sp[2];
-            String status = sp[3];
+            int time = Integer.parseInt(park[0]) * 60 + Integer.parseInt(park[1]);
+            String carNumber = park[2];
+            String state = park[3];
             
-            int time = hour * 60 + minute;
+            sort.putIfAbsent(carNumber, 0);
             
-            if(status.equals("IN")) {
-                map.put(number, time);
+            if(state.equals("IN")){
+                map.put(carNumber, time);
             } else {
-                int inTime = map.get(number);
-                int parkingTime = time - inTime;
+                int inTime = map.get(carNumber);
+                int useTime = time - inTime;
                 
-                total.put(number, total.getOrDefault(number, 0) + parkingTime);
-                map.remove(number);
+                sort.put(carNumber, sort.get(carNumber) + useTime);
+                map.remove(carNumber);
             }
         }
         
-        int endTime = 23 * 60 + 59;
+        int end = 23 * 60 + 59;
         
-        for(String number : map.keySet()){
-            int inTime = map.get(number);
-            int parkingTime = endTime - inTime;
+        for(String carNumber : map.keySet()){
             
-            total.put(number, total.getOrDefault(number, 0) + parkingTime);
+            int inTime = map.get(carNumber);
+            int usedTime = end - inTime;
+            
+            sort.put(carNumber, sort.get(carNumber) + usedTime);
         }
         
-        int[] result = new int[total.size()];
+        int[] result = new int[sort.size()];
         int index = 0;
         
-        for(String number : total.keySet()) {
-            int time = total.get(number);
-            
-            if(time <= fees[0]){
-                result[index++] = fees[1];
-            } else {
-                int over = time - fees[0];
-                int unit = (int) Math.ceil((double) over / fees[2]);
-                result[index++] = fees[1] + unit * fees[3];
-            }
+        for(String carNumber : sort.keySet()){
+            int totalTime = sort.get(carNumber);
+            result[index++] = fee(totalTime, fees);
         }
         
         return result;
+    }
+    
+    public int fee(int totalTime, int[] fees){
+        
+        int basicTime = fees[0];
+        int basicFee = fees[1];
+        int unitTime = fees[2];
+        int unitFee = fees[3];
+        
+        if(totalTime <= basicTime){
+            return basicFee;
+        }
+        
+        int extraTime = totalTime - basicTime;
+        int unitCount = (extraTime + unitTime - 1) / unitTime;
+        
+        return basicFee + unitCount * unitFee;
     }
 }
