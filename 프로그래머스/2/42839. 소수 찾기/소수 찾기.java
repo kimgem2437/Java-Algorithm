@@ -2,39 +2,42 @@ import java.util.*;
 
 class Solution {
     
-    boolean[] visited;
     Set<Integer> set = new HashSet<>();
+    boolean[] visited;
     
     public int solution(String numbers) {
         
         visited = new boolean[numbers.length()];
         
         dfs(numbers, "");
+        
         int result = 0;
         
         for(int num : set){
-            if(isPrime(num)){
-                result++;
-            }
+           if(isPrime(num)){
+               result++;
+           }
         }
         
         return result;
     }
     
-    public void dfs(String numbers, String current){
+    public void dfs(String numbers, String curr){
         
-        if(!current.equals("")){
-            set.add(Integer.parseInt(current));
+        if(!curr.equals("")){
+            set.add(Integer.parseInt(curr));
         }
         
         for(int i = 0; i < numbers.length(); i++){
+            
+            char c = numbers.charAt(i);
             
             if(visited[i]){
                 continue;
             }
             
             visited[i] = true;
-            dfs(numbers, current + numbers.charAt(i));
+            dfs(numbers, curr + String.valueOf(c));
             visited[i] = false;
         }
         
@@ -48,12 +51,13 @@ class Solution {
         
         for(int i = 2; i * i <= num; i++){
             
-            if(num % i == 0) {
+            if(num % i == 0){
                 return false;
             }
             
         }
         
         return true;
+        
     }
 }
