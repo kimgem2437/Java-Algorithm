@@ -1,19 +1,18 @@
-import java.util.Arrays;
+class Solution {
+    public long solution(int a, int b) {
+        
+        long result = 0;
+        
+        if(a <= b) {
+            for(long i = a; i <= b; i++){
+                result += i;
+            }
+        } else {
+            for(long i = b; i <= a; i++){
+                result += i;
+            }
+        }
 
-public class Solution {
-	public long solution(int a, int b) {
-		
-		int[] num = {a, b};
-		Arrays.sort(num);
-		
-		if(num[0] == num[1]) {
-			return (long)num[0];
-		} else {
-			long sum = 0;
-			for(int i = num[0]; i <= num[1]; i++) {
-				sum += i;
-			}
-			return (long)sum;
-		}
-	}
+        return result;
+    }
 }
