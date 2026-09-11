@@ -1,7 +1,7 @@
 class Solution {
     
-    boolean[] visited;
     int result = 0;
+    boolean[] visited;
     
     public int solution(int k, int[][] dungeons) {
         
@@ -14,22 +14,26 @@ class Solution {
     
     public void dfs(int k, int[][] dungeons, int cnt){
         
-        result = Math.max(cnt, result);
+        result = Math.max(result, cnt);
         
         for(int i = 0; i < dungeons.length; i++){
             
-            if(dungeons[i][0] > k || visited[i]){
+            int min = dungeons[i][0];
+            int use = dungeons[i][1];
+            
+            if(visited[i]){
+                continue;
+            }
+            
+            if(k < min){
                 continue;
             }
             
             visited[i] = true;
-            dfs(k - dungeons[i][1], dungeons, cnt + 1);
+            dfs(k - use, dungeons, cnt + 1);
             visited[i] = false;
             
-            if(k == 0){
-                break;
-            }
         }
-        
+    
     }
 }
