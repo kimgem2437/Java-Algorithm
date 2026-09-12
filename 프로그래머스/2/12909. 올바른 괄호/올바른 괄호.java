@@ -2,27 +2,28 @@ import java.util.*;
 
 class Solution {
     boolean solution(String s) {
-        boolean answer = true;
         
-        Stack<String> st = new Stack<>();
+        Stack<Character> st = new Stack<>();
         
         for(int i = 0; i < s.length(); i++){
+            
             char c = s.charAt(i);
-            if(c == '('){
-                st.push(String.valueOf(c));
-            } else if(!st.isEmpty() && c == ')' && st.peek().equals("(")){
+            
+            if(st.isEmpty()){
+                st.push(c);
+            } else if(!st.isEmpty() && c == ')' && st.peek() == '('){
                 st.pop();
             } else {
-                answer = false;
-                break;
+                st.push(c);
             }
+            
         }
         
-        while(!st.isEmpty()){
-            st.pop();
-            answer = false;
+        if(!st.isEmpty()){
+            return false;
+        } else {
+            return true;
         }
-        
-        return answer;
+       
     }
 }
