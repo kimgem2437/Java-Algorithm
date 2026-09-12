@@ -3,29 +3,27 @@ import java.util.*;
 class Solution {
     public int solution(int[] scoville, int K) {
         
-        int cnt = 0;
-        
-        PriorityQueue<Integer> heap = new PriorityQueue<>();
+        PriorityQueue<Long> pq = new PriorityQueue<>();
         
         for(int i = 0; i < scoville.length; i++){
-            heap.offer(scoville[i]);
+            pq.offer((long)scoville[i]);
         }
         
-        while(heap.peek() < K){
+        int result = 0;
+        
+        while(pq.peek() < K){
             
-            if(heap.size() < 2){
+            if(pq.size() < 2){
                 return -1;
             }
             
-            int first = heap.poll();
-            int second = heap.poll();
-            
-            int mix = first + second * 2;
-            
-            heap.offer(mix);
-            cnt++;
+            long one = pq.poll();
+            long two = pq.poll();
+            long sum = one + two * 2;
+            pq.offer(sum);
+            result++;
         }
         
-        return cnt;
+        return result;
     }
 }
