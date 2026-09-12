@@ -2,8 +2,8 @@ import java.util.*;
 
 class Solution {
     
-    Set<Integer> set = new HashSet<>();
     boolean[] visited;
+    Set<Integer> set = new HashSet<>();
     
     public int solution(String numbers) {
         
@@ -14,9 +14,10 @@ class Solution {
         int result = 0;
         
         for(int num : set){
-           if(isPrime(num)){
-               result++;
-           }
+            
+            if(isPrime(num)){
+                result++;
+            }
         }
         
         return result;
@@ -37,7 +38,7 @@ class Solution {
             }
             
             visited[i] = true;
-            dfs(numbers, curr + String.valueOf(c));
+            dfs(numbers, curr + c);
             visited[i] = false;
         }
         
@@ -50,14 +51,11 @@ class Solution {
         }
         
         for(int i = 2; i * i <= num; i++){
-            
             if(num % i == 0){
                 return false;
             }
-            
         }
         
         return true;
-        
     }
 }
